@@ -18,18 +18,19 @@ function Header({ bal, address, handleWalletConnect }: any) {
   }
 
   return (
-    <Flex rounded="md" direction="row" p={2} justifyContent="space-between">
+    <Flex rounded="md" direction="row" p={4} justifyContent="space-between">
       <Link href="/">
         <Flex ml="2rem" mt="1rem" maxWidth={"md"}>
           <Image
             position="absolute"
             zIndex="overlay"
-            src="https://res.cloudinary.com/dev-connect/image/upload/v1636452465/svgs/Group_1Logo_1_1_fbbkez.svg"
+            src="https://res.cloudinary.com/dev-connect/image/upload/v1637389107/img/finallogo_fzlrzm.png"
             alt="logo"
+            maxW="4rem"
           />
         </Flex>
       </Link>
-      <Flex>
+      <Flex p={3}>
         {bal && address ? (
           <>
             <Box m={2} p={2}>
@@ -51,9 +52,9 @@ function Header({ bal, address, handleWalletConnect }: any) {
               {" "}
               {addressDisplay}
             </Button>
-            <Link href="/auth/login">
+            <Link href="/auth/login" >
               <Button m={3} p={4} color="white" colorScheme="twitter">
-                Make your profile
+               Your profile
               </Button>
             </Link>
           </>

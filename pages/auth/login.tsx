@@ -33,9 +33,9 @@ const Login: NextPage = () => {
             { returning: "minimal" }
           );
           console.log(data, error);
-          Router.push('/home')
+          Router.push('/create')
         }else{
-          Router.push('/home')
+          Router.push('/create')
         }
     }
   };

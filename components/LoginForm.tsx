@@ -104,9 +104,9 @@ const LoginForm = ({
                 leftIcon={<HiOutlineSparkles />}
                 onClick={() => handleLogin(wallet.address, name)}
               >
-                Sign - up
+                Save
               </Button>
-              t
+              
             </Flex>
           </Box>
           {/* <chakra.p fontSize="xs" textAlign="center" color="gray.600">
