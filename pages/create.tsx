@@ -8,7 +8,7 @@ const Hom: NextPage = () => {
   return (
     <>
       <Head>
-        <title>Home</title>
+        <title>Welcome to Fanvest</title>
       </Head>
       <Flex direction="row">
       <SideBar />
