@@ -20,10 +20,11 @@ import { FaMagic } from "react-icons/fa";
 import { CgProfile } from "react-icons/cg";
 import NavItem from "./NavItem";
 import Router from "next/router";
-
+import { useRouter } from 'next/router'
 export default function SidebarBarComp() {
   const [navSize, changeNavSize] = useState("large");
-  const [activePage, setActivePage] = useState(1);
+  const router= useRouter();
+  const [activePage, setActivePage] = useState(router.pathname);
   return (
     <Flex
       pos="sticky"
@@ -44,7 +45,7 @@ export default function SidebarBarComp() {
       >
         <button
           onClick={() => {
-            setActivePage(1);
+            setActivePage("/create");
             Router.push("/create");
           }}
         >
@@ -52,21 +53,24 @@ export default function SidebarBarComp() {
             navSize={navSize}
             icon={FaMagic}
             title="Create"
-            active={activePage == 1}
+            active={activePage == "/create"}
             description="This is the description for the dashboard."
           />
         </button>
+        
         <button
           onClick={() => {
-            setActivePage(2);
+          
             Router.push("/profile");
+            setActivePage("/profile");
+            console.log(activePage);
           }}
         >
           <NavItem
             navSize={navSize}
             icon={CgProfile}
             title="Profile"
-            active={activePage == 2}
+            active={activePage == "/profile"}
             description={""}
           />
         </button>

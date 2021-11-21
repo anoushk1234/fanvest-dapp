@@ -33,9 +33,7 @@ function Header({ bal, address, handleWalletConnect }: any) {
       <Flex p={3}>
         {bal && address ? (
           <>
-            <Box m={2} p={2}>
-              <Link href="/create">Create event</Link>
-            </Box>
+           
 
             <Box m={2} p={2}>
               <Link href="/withdraw">Withdraw funds</Link>
