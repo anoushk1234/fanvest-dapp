@@ -3,95 +3,128 @@ import {
   chakra,
   Box,
   Image,
+  Button,
+  Link,
+  Stack,
+  Badge,
+  Heading,
+  Text,
+  Avatar,
   Flex,
   Icon,
   useColorModeValue,
 } from "@chakra-ui/react";
 
-import { MdHeadset, MdEmail, MdLocationOn } from "react-icons/md";
-import { BsFillBriefcaseFill } from "react-icons/bs";
 import SideBar from "../components/Sidebar";
 const Ma = () => {
   return (
     <Flex direction="row">
       <SideBar />
-      <Flex p={10} w="full" alignItems="center" justifyContent="center">
-        <Box
-          w="sm"
-          mx="auto"
-          bg={useColorModeValue("white", "gray.800")}
-          shadow="lg"
-          rounded="lg"
-          overflow="hidden"
+      <Box
+        maxW={"320px"}
+        w={"full"}
+        bg={useColorModeValue("white", "gray.900")}
+        boxShadow={"2xl"}
+        rounded={"lg"}
+        p={6}
+        textAlign={"center"}
+      >
+        <Avatar
+          size={"xl"}
+          src={
+            "https://images.unsplash.com/photo-1520810627419-35e362c5dc07?ixlib=rb-1.2.1&q=80&fm=jpg&crop=faces&fit=crop&h=200&w=200&ixid=eyJhcHBfaWQiOjE3Nzg0fQ"
+          }
+          alt={"Avatar Alt"}
+          mb={4}
+          pos={"relative"}
+          _after={{
+            content: '""',
+            w: 4,
+            h: 4,
+            bg: "green.300",
+            border: "2px solid white",
+            rounded: "full",
+            pos: "absolute",
+            bottom: 0,
+            right: 3,
+          }}
+        />
+        <Heading fontSize={"2xl"} fontFamily={"body"}>
+          Lindsey James
+        </Heading>
+        <Text fontWeight={600} color={"gray.500"} mb={4}>
+          @lindsey_jam3s
+        </Text>
+        <Text
+          textAlign={"center"}
+          color={useColorModeValue("gray.700", "gray.400")}
+          px={3}
         >
-          <Image
-            w="full"
-            h={56}
-            fit="cover"
-            objectPosition="center"
-            src="https://images.unsplash.com/photo-1517841905240-472988babdf9?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=334&q=80"
-            alt="avatar"
-          />
+          Actress, musician, songwriter and artist. PM for work inquires or{" "}
+          <Link href={"#"} color={"blue.400"}>
+            #tag
+          </Link>{" "}
+          me in your posts
+        </Text>
 
-          <Flex alignItems="center" px={6} py={3} bg="gray.900">
-            <Icon as={MdHeadset} h={6} w={6} color="white" />
+        <Stack align={"center"} justify={"center"} direction={"row"} mt={6}>
+          <Badge
+            px={2}
+            py={1}
+            bg={useColorModeValue("gray.50", "gray.800")}
+            fontWeight={"400"}
+          >
+            #art
+          </Badge>
+          <Badge
+            px={2}
+            py={1}
+            bg={useColorModeValue("gray.50", "gray.800")}
+            fontWeight={"400"}
+          >
+            #photography
+          </Badge>
+          <Badge
+            px={2}
+            py={1}
+            bg={useColorModeValue("gray.50", "gray.800")}
+            fontWeight={"400"}
+          >
+            #music
+          </Badge>
+        </Stack>
 
-            <chakra.h1 mx={3} color="white" fontWeight="bold" fontSize="lg">
-              Focusing
-            </chakra.h1>
-          </Flex>
-
-          <Box py={4} px={6}>
-            <chakra.h1
-              fontSize="xl"
-              fontWeight="bold"
-              color={useColorModeValue("gray.800", "white")}
-            >
-              Patterson johnson
-            </chakra.h1>
-
-            <chakra.p py={2} color={useColorModeValue("gray.700", "gray.400")}>
-              Full Stack maker & UI / UX Designer , love hip hop music Author of
-              Building UI.
-            </chakra.p>
-
-            <Flex
-              alignItems="center"
-              mt={4}
-              color={useColorModeValue("gray.700", "gray.200")}
-            >
-              <Icon as={BsFillBriefcaseFill} h={6} w={6} mr={2} />
-
-              <chakra.h1 px={2} fontSize="sm">
-                Choc UI
-              </chakra.h1>
-            </Flex>
-
-            <Flex
-              alignItems="center"
-              mt={4}
-              color={useColorModeValue("gray.700", "gray.200")}
-            >
-              <Icon as={MdLocationOn} h={6} w={6} mr={2} />
-
-              <chakra.h1 px={2} fontSize="sm">
-                California
-              </chakra.h1>
-            </Flex>
-            <Flex
-              alignItems="center"
-              mt={4}
-              color={useColorModeValue("gray.700", "gray.200")}
-            >
-              <Icon as={MdEmail} h={6} w={6} mr={2} />
-
-              <chakra.h1 px={2} fontSize="sm">
-                patterson@example.com
-              </chakra.h1>
-            </Flex>
-          </Box>
-        </Box>
-      </Flex>
+        <Stack mt={8} direction={"row"} spacing={4}>
+          <Button
+            flex={1}
+            fontSize={"sm"}
+            rounded={"full"}
+            _focus={{
+              bg: "gray.200",
+            }}
+          >
+            Message
+          </Button>
+          <Button
+            flex={1}
+            fontSize={"sm"}
+            rounded={"full"}
+            bg={"blue.400"}
+            color={"white"}
+            boxShadow={
+              "0px 1px 25px -5px rgb(66 153 225 / 48%), 0 10px 10px -5px rgb(66 153 225 / 43%)"
+            }
+            _hover={{
+              bg: "blue.500",
+            }}
+            _focus={{
+              bg: "blue.500",
+            }}
+          >
+            Follow
+          </Button>
+        </Stack>
+      </Box>
     </Flex>
   );
 };

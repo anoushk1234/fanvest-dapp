@@ -20,6 +20,7 @@ function CreateForm({
   setDate,
   mint_Supply,
   contractAddress,
+  setContractAddress,
 }: any) {
   return (
     <>
@@ -77,7 +78,8 @@ function CreateForm({
           deployContract()
             .then((res: any) => {
               console.log(res);
-              mint_Supply()
+              setContractAddress(res);
+              mint_Supply(res)
                 .then((res: any) => {
                   console.log(res);
                 })

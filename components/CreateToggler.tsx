@@ -23,7 +23,6 @@ import { create as ipfsHttpClient } from "ipfs-http-client";
 // import getContractAddress from "../utils/contractAddress";
 import { ethers, ContractFactory } from "ethers";
 import { abi } from "../utils/Fanvest.json";
-import { computeAddress } from "@ethersproject/transactions";
 const { bytecode } = require("../utils/bytecode.json");
 declare const window: any;
 const client = ipfsHttpClient("https://ipfs.infura.io:5001/api/v0");
@@ -81,30 +80,32 @@ export default function CreateToggler() {
     if (wallet.address) {
       const factory = new ContractFactory(abi, bytecode, signer);
       const contract = await factory.deploy();
-      setContractAddress(contract.address);
       return contract.address;
-      // const contract = new ethers.Contract(contractAddress, abi, signer)
-      // const txn = await contract.createEvent(
     } else {
-      return "err";
+      toast.error("Please connect to MetaMask");
+      return "0x";
     }
   };
-  const mint_Supply = async () => {
+  const mint_Supply = async (contractAddress: any) => {
     const provider = new ethers.providers.Web3Provider(window.ethereum);
     const signer = provider.getSigner();
 
     if (wallet.address) {
       setInTxn(true);
+      console.log(contractAddress, wallet.address);
 
-      const contract = new ethers.Contract(contractAddress, abi, signer);
       try {
+        const contract = new ethers.Contract(contractAddress, abi, signer);
         let met = await createMetaData();
-        console.log(met, title, fee, fractions, date);
+        console.log(btoa(met), title, fee, fractions);
         const txn = await contract.mintSupply(
-          String(title),
-          met,
-          Number(fee),
-          Number(fractions)
+          title,
+          btoa(met),
+          fee,
+          fractions,
+          {
+            gasLimit: 1000000,
+          }
         );
         await txn.wait();
 
@@ -274,6 +275,7 @@ export default function CreateToggler() {
               setDate={setDate}
               mint_Supply={mint_Supply}
               contractAddress={contractAddress}
+              setContractAddress={setContractAddress}
             >
               {" "}
             </CreateForm>
