@@ -1,4 +1,4 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import Header from "./Header";
 import Web3 from "web3";
 import { walletContext } from "../utils/walletContext";
@@ -46,7 +46,9 @@ const Layout = ({ children }: any) => {
     setAddress(null);
     setBalance(null);
   }
-
+  useEffect(() => {
+    loadAccounts();
+  }, []);
   return (
     <div>
       <Header

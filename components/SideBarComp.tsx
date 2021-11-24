@@ -1,30 +1,17 @@
 import React, { useState } from "react";
-import {
-  Flex,
-  Text,
-  IconButton,
-  Divider,
-  Avatar,
-  Heading,
-} from "@chakra-ui/react";
-import {
-  FiMenu,
-  FiHome,
-  FiCalendar,
-  FiUser,
-  FiDollarSign,
-  FiBriefcase,
-  FiSettings,
-} from "react-icons/fi";
-import { FaMagic } from "react-icons/fa";
+import { Flex } from "@chakra-ui/react";
+import { FaMagic, FaEthereum } from "react-icons/fa";
 import { CgProfile } from "react-icons/cg";
 import NavItem from "./NavItem";
-import Router from "next/router";
-import { useRouter } from 'next/router'
+import Link from "next/link";
+import { useRouter } from "next/router";
 export default function SidebarBarComp() {
   const [navSize, changeNavSize] = useState("large");
-  const router= useRouter();
+  const router = useRouter();
   const [activePage, setActivePage] = useState(router.pathname);
+  const handleNavClick = (e: any) => {
+    setActivePage(e.target.getAttribute("href"));
+  };
   return (
     <Flex
       pos="sticky"
@@ -43,37 +30,43 @@ export default function SidebarBarComp() {
         alignItems={navSize == "small" ? "center" : "flex-start"}
         as="nav"
       >
-        <button
+        <Link href="/create" passHref>
+          <button onClick={handleNavClick}>
+            <NavItem
+              navSize={navSize}
+              icon={FaMagic}
+              title="Create"
+              active={activePage == "/create"}
+              description="This is the description for the dashboard."
+            />
+          </button>
+        </Link>
+        <Link href="/profile" passHref>
+          <button onClick={handleNavClick}>
+            <NavItem
+              navSize={navSize}
+              icon={CgProfile}
+              title="Profile"
+              active={activePage == "/profile"}
+              description={""}
+            />
+          </button>
+        </Link>
+        {/* <button
           onClick={() => {
-            setActivePage("/create");
-            Router.push("/create");
-          }}
-        >
-          <NavItem
-            navSize={navSize}
-            icon={FaMagic}
-            title="Create"
-            active={activePage == "/create"}
-            description="This is the description for the dashboard."
-          />
-        </button>
-        
-        <button
-          onClick={() => {
-          
-            Router.push("/profile");
-            setActivePage("/profile");
+            Router.push("/withdraw");
+            setActivePage("/withdraw");
             console.log(activePage);
           }}
         >
           <NavItem
             navSize={navSize}
-            icon={CgProfile}
-            title="Profile"
-            active={activePage == "/profile"}
+            icon={FaEthereum}
+            title="Withdraw"
+            active={activePage == "/withdraw"}
             description={""}
           />
-        </button>
+        </button> */}
 
         {/* <NavItem navSize={navSize} icon={FiUser} title="Clients" active={false} description={""}/>
         <NavItem navSize={navSize} icon={IoPawOutline} title="Animals" active={false} description={""} />

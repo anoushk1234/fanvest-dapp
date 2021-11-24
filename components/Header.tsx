@@ -19,7 +19,7 @@ function Header({ bal, address, handleWalletConnect }: any) {
 
   return (
     <Flex rounded="md" direction="row" p={4} justifyContent="space-between">
-      <Link href="/">
+      <Link href="/" passHref>
         <Flex ml="2rem" mt="1rem" maxWidth={"md"}>
           <Image
             position="absolute"
@@ -33,12 +33,6 @@ function Header({ bal, address, handleWalletConnect }: any) {
       <Flex p={3}>
         {bal && address ? (
           <>
-           
-
-            <Box m={2} p={2}>
-              <Link href="/withdraw">Withdraw funds</Link>
-            </Box>
-
             <Box m={2} p={2}>
               <Link href="#">How it works?</Link>
             </Box>
@@ -50,9 +44,9 @@ function Header({ bal, address, handleWalletConnect }: any) {
               {" "}
               {addressDisplay}
             </Button>
-            <Link href="/auth/login" >
+            <Link href="/auth/login">
               <Button m={3} p={4} color="white" colorScheme="twitter">
-               Your profile
+                Your profile
               </Button>
             </Link>
           </>

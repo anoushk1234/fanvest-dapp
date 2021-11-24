@@ -1,6 +1,23 @@
-// import axios from 'axios'
-// import { create, urlSource } from 'ipfs-http-client'
-// import moment from 'moment'
+import axios from "axios";
+import { create, urlSource } from "ipfs-http-client";
+export const testAuthentication = () => {
+  const url = `https://api.pinata.cloud/data/testAuthentication`;
+  return axios
+    .get(url, {
+      headers: {
+        pinata_api_key: process.env.NEXT_PUBLIC_PINATA_KEY || "",
+        pinata_secret_api_key: process.env.NEXT_PUBLIC_PINATA_SECRET || "",
+      },
+    })
+    .then(function (response: any) {
+      //handle your response here
+      console.log(response);
+    })
+    .catch(function (error: any) {
+      //handle error here
+      console.log(error);
+    });
+};
 
 // const ipfs = create({
 //     host: 'ipfs.infura.io',

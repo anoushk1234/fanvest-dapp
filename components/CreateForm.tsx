@@ -14,9 +14,12 @@ function CreateForm({
   setDescription,
   setFee,
   uploadToIPFS,
+  deployContract,
   setFractions,
   setFile,
   setDate,
+  mint_Supply,
+  contractAddress,
 }: any) {
   return (
     <>
@@ -39,9 +42,10 @@ function CreateForm({
           type="file"
           p={1}
           accept="image/*"
-          onChange={(e) =>
-            e.target.files ? setFile(e.target.files[0]) : undefined
-          }
+          onChange={(e) => {
+            e.preventDefault();
+            setFile(e.target.files[0]);
+          }}
         />
         <InputRightAddon>
           {" "}
@@ -54,7 +58,7 @@ function CreateForm({
           onChange={(e) => setFee(e.target.value)}
           placeholder={"Amount"}
         />
-        <InputRightAddon>MATIC</InputRightAddon>
+        <InputRightAddon>FANX</InputRightAddon>
       </InputGroup>
 
       <hr />
@@ -64,7 +68,28 @@ function CreateForm({
           setDate(new Date(target.value));
         }}
       />
-      <Button m={2} variant="outline" p={4} onClick={uploadToIPFS}>
+      <Button
+        m={2}
+        variant="outline"
+        p={4}
+        onClick={() => {
+          uploadToIPFS(setFile);
+          deployContract()
+            .then((res: any) => {
+              console.log(res);
+              mint_Supply()
+                .then((res: any) => {
+                  console.log(res);
+                })
+                .catch((err: any) => {
+                  console.log(err);
+                });
+            })
+            .catch((err: any) => {
+              console.log(err);
+            });
+        }}
+      >
         Launch Project
       </Button>
     </>
