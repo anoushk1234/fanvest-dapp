@@ -1,18 +1,15 @@
 import React, { useState, useEffect } from "react";
 import {
   Flex,
-  Icon,
   useColorModeValue,
   Box,
   Text,
   chakra,
-  SimpleGrid,
   Button,
   Stack,
   Code,
   useClipboard,
 } from "@chakra-ui/react";
-import axios from "axios";
 import { toast } from "react-toastify";
 import StreamForm from "./StreamForm";
 import CreateForm from "./CreateForm";
@@ -24,8 +21,14 @@ import { create as ipfsHttpClient } from "ipfs-http-client";
 import { ethers, ContractFactory } from "ethers";
 import { abi } from "../utils/Fanvest.json";
 const { bytecode } = require("../utils/bytecode.json");
+import { supabase } from "../utils/supabaseClient";
+import moment from "moment";
 declare const window: any;
-const client = ipfsHttpClient("https://ipfs.infura.io:5001/api/v0");
+const client = ipfsHttpClient({
+  host: "ipfs.infura.io",
+  port: 5001,
+  protocol: "https",
+});
 export default function CreateToggler() {
   const [page, setPage] = useState("Info");
   const [wallet] = useContext(walletContext);
@@ -86,6 +89,58 @@ export default function CreateToggler() {
       return "0x";
     }
   };
+  // let id: int = [];
+  // const { data, error } = await supabase
+  //   .from("projects")
+  //   .select()
+  //   .eq("public_address", address)
+  //   .select("id");
+  // data.forEach((element: any) => {
+  //   id.push(element.id);
+  // });
+  // console.log(id, Math.max(...id));
+  // if (id === undefined) {
+  const sendProjectToSupabase = async (
+    address: string,
+    contractAddress: any
+  ) => {
+    try {
+      const { data, error } = await supabase.from("projects").insert(
+        {
+          public_address: address,
+          contract_address: contractAddress,
+          title: title,
+          desc: description,
+          image: `https://ipfs.infura.io/ipfs/${cid}`,
+          fracts: fractions,
+          fee: fee,
+          date: date,
+        },
+        { returning: "minimal" }
+      );
+      // const { data, error } = await supabase.from("projects").select();
+      // console.log(data[0]);
+      console.log({
+        public_address: address,
+        contract_address: contractAddress,
+        title: title,
+        desc: description,
+        image: `https://ipfs.infura.io/ipfs/${cid}`,
+        fracts: String(fractions),
+        fee: fee,
+        date: moment(date).format("DD/MM/YYYY"),
+      });
+      console.log(data);
+      // }
+      // console.log(data, error);
+    } catch (error) {
+      console.log(error);
+    }
+
+    // } catch (err) {
+    //   console.log(err);
+    // }
+  };
   const mint_Supply = async (contractAddress: any) => {
     const provider = new ethers.providers.Web3Provider(window.ethereum);
     const signer = provider.getSigner();
@@ -110,6 +165,7 @@ export default function CreateToggler() {
         await txn.wait();
 
         console.log("Txn completed!", txn);
+        sendProjectToSupabase(wallet.address, contractAddress);
         toast.success("Supply minted ⛏");
         setInTxn(false);
         return txn;

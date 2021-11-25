@@ -45,7 +45,7 @@ function CreateForm({
           accept="image/*"
           onChange={(e) => {
             e.preventDefault();
-            setFile(e.target.files[0]);
+            e.target.files ? setFile(e.target.files[0]) : null;
           }}
         />
         <InputRightAddon>
