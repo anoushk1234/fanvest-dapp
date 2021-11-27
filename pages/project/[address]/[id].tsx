@@ -65,7 +65,7 @@ const Project: NextPage = () => {
           <Flex flexDir="column" justifyContent="space-evenly">
             <Flex flexDir="row">
               <Skeleton isLoaded={image ? true : false} margin={5} boxSize="md">
-                <Box bgColor="gray.100" borderRadius="xl">
+                <Box bgColor="gray.200" borderRadius="xl">
                   <Image
                     borderRadius="xl"
                     margin={5}
@@ -139,6 +139,7 @@ const Project: NextPage = () => {
                     goal: "1000",
                     address: address,
                     id: id,
+                    share: 0.001,
                   }}
                 />
               </Flex>

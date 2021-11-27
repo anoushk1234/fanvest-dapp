@@ -4,7 +4,7 @@ export default function ProjectInfo({ title, desc }: any) {
   return (
     <>
       <Heading
-        bgGradient="linear(to-tr, #4e54c8,#8f94fb)"
+        bgGradient="linear(to-tr, #e6ddcc,#e6ddcc)"
         marginLeft="10"
         marginTop="20"
         bgClip="text"
