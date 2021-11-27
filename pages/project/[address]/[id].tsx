@@ -24,6 +24,7 @@ import {
 import ProjectInfo from "../../../components/ProjectInfo";
 import FundsBox from "../../../components/FundsBox";
 import Backers from "../../../components/Backers";
+import { randomInt } from "crypto";
 
 const Project: NextPage = () => {
   const backgrounds = [
@@ -64,17 +65,25 @@ const Project: NextPage = () => {
           <Flex flexDir="column" justifyContent="space-evenly">
             <Flex flexDir="row">
               <Skeleton isLoaded={image ? true : false} margin={5} boxSize="md">
-                <Image margin={5} maxH="auto" src={image} alt="movie poster" />
+                <Box bgColor="gray.100" borderRadius="xl">
+                  <Image
+                    borderRadius="xl"
+                    margin={5}
+                    maxH="auto"
+                    src={image}
+                    alt="movie poster"
+                  />
+                </Box>
               </Skeleton>
               <Box
                 boxShadow={"lg"}
-                maxW={"640px"}
+                maxW={"649px"}
                 direction={{ base: "column-reverse", md: "row" }}
                 width={"xl"}
                 rounded={"xl"}
                 mt={"2rem"}
                 ml={"4rem"}
-                p={4}
+                p={3}
                 justifyContent={"space-between"}
                 position={"relative"}
                 bg={useColorModeValue("white", "gray.800")}
@@ -101,7 +110,8 @@ const Project: NextPage = () => {
                   backgroundSize: "cover",
                   top: 0,
                   left: 0,
-                  backgroundImage: backgrounds[1 % 4],
+                  backgroundImage:
+                    backgrounds[(Math.floor(Math.random() * 4) + 1) % 4],
                 }}
               >
                 <Heading size="lg" marginBottom={5}>
@@ -112,6 +122,7 @@ const Project: NextPage = () => {
                     {
                       add: address,
                       id: id,
+                      tokenquantity: 1,
                     },
                   ]}
                 />
