@@ -15,13 +15,4 @@ module.exports = {
 
     return config;
   },
-  async rewrites() {
-    return [
-      // Rewrite everything to `pages/index`
-      {
-        source: "/:any*",
-        destination: "/",
-      },
-    ];
-  },
 };

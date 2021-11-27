@@ -21,6 +21,8 @@ function CreateForm({
   mint_Supply,
   contractAddress,
   setContractAddress,
+  setCreated,
+  setCid,
 }: any) {
   return (
     <>
@@ -74,7 +76,9 @@ function CreateForm({
         variant="outline"
         p={4}
         onClick={() => {
-          uploadToIPFS(setFile);
+          uploadToIPFS(setFile).then((cid: any) => {
+            setCid(cid);
+          });
           deployContract()
             .then((res: any) => {
               console.log(res);
@@ -82,6 +86,8 @@ function CreateForm({
               mint_Supply(res)
                 .then((res: any) => {
                   console.log(res);
+
+                  setCreated(true);
                 })
                 .catch((err: any) => {
                   console.log(err);

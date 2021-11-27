@@ -41,11 +41,11 @@ export default function CreateToggler() {
   const [file, setFile]: any = useState(undefined);
   const [date, setDate]: any = useState(undefined);
   const [cid, setCid]: any = useState("");
-
+  const [id, setId]: any = useState("");
   const [created, setCreated] = useState(false);
   const [startStream, setStartStream] = useState(false);
   const { hasCopied, onCopy } = useClipboard(
-    `https://fanvest.vercel.app/event/${wallet.address}/${cid}`
+    `http://localhost:3000/project/${wallet.address}/${id}`
   );
 
   if (hasCopied) {
@@ -100,6 +100,16 @@ export default function CreateToggler() {
   // });
   // console.log(id, Math.max(...id));
   // if (id === undefined) {
+  const fetchProject = async () => {
+    const { data, error } = await supabase.from("projects").select();
+    data
+      ? data.forEach((element: any) => {
+          if (element.contractAddress === contractAddress) {
+            return element.id;
+          }
+        })
+      : null;
+  };
   const sendProjectToSupabase = async (
     address: string,
     contractAddress: any
@@ -136,10 +146,6 @@ export default function CreateToggler() {
     } catch (error) {
       console.log(error);
     }
-
-    // } catch (err) {
-    //   console.log(err);
-    // }
   };
   const mint_Supply = async (contractAddress: any) => {
     const provider = new ethers.providers.Web3Provider(window.ethereum);
@@ -189,7 +195,7 @@ export default function CreateToggler() {
       });
       const url = `https://ipfs.infura.io/ipfs/${added.path}`;
       console.log(url);
-      setCid(added.path);
+      return added.path;
     } catch (error) {
       console.log("Error uploading file: ", error);
     }
@@ -252,6 +258,15 @@ export default function CreateToggler() {
   useEffect(() => {
     testAuthentication();
   }, []);
+  useEffect(() => {
+    created
+      ? fetchProject().then((res: any) => {
+          setId(res);
+          setCreated(true);
+        })
+      : null;
+    console.log(contractAddress, "cA");
+  }, [contractAddress]);
   // useEffect(() => {
   //   console.log(file + "file");
   // }, [file]);
@@ -312,10 +327,10 @@ export default function CreateToggler() {
           {created ? (
             <>
               <Text>
-                You have successfully created an event! Share this link for
-                booking{" "}
+                You have successfully launched your project! Share this link for
+                funding with your fans{" "}
                 <Code onClick={onCopy}>
-                  {`https://metapass.vercel.app/event/${wallet.address}/${cid}`}
+                  {`http://localhost:3000/project/${wallet.address}/${id}`}
                 </Code>
               </Text>
             </>
@@ -332,6 +347,8 @@ export default function CreateToggler() {
               mint_Supply={mint_Supply}
               contractAddress={contractAddress}
               setContractAddress={setContractAddress}
+              setCreated={setCreated}
+              setCid={setCid}
             >
               {" "}
             </CreateForm>
