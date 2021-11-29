@@ -66,7 +66,6 @@ export default function CreateToggler() {
   const createMetaData = async () => {
     let metadata = {
       name: title,
-      description: description,
       image: `https://ipfs.infura.io/ipfs/${cid}`,
       properties: {
         fractions: fractions,

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { abi } from "../../../utils/Fanvest.json";
 import { bytecode } from "../../../utils/bytecode.json";
 import { supabase } from "../../../utils/supabaseClient";
@@ -24,8 +24,8 @@ import {
 import ProjectInfo from "../../../components/ProjectInfo";
 import FundsBox from "../../../components/FundsBox";
 import Backers from "../../../components/Backers";
-import { randomInt } from "crypto";
 
+declare const window: any;
 const Project: NextPage = () => {
   const backgrounds = [
     `url("data:image/svg+xml, %3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'560\' height=\'185\' viewBox=\'0 0 560 185\' fill=\'none\'%3E%3Cellipse cx=\'102.633\' cy=\'61.0737\' rx=\'102.633\' ry=\'61.0737\' fill=\'%23ED64A6\' /%3E%3Cellipse cx=\'399.573\' cy=\'123.926\' rx=\'102.633\' ry=\'61.0737\' fill=\'%23F56565\' /%3E%3Cellipse cx=\'366.192\' cy=\'73.2292\' rx=\'193.808\' ry=\'73.2292\' fill=\'%2338B2AC\' /%3E%3Cellipse cx=\'222.705\' cy=\'110.585\' rx=\'193.808\' ry=\'73.2292\' fill=\'%23ED8936\' /%3E%3C/svg%3E")`,
@@ -34,9 +34,14 @@ const Project: NextPage = () => {
     `url("data:image/svg+xml, %3Csvg xmlns='http://www.w3.org/2000/svg' width='560' height='185' viewBox='0 0 560 185' fill='none'%3E%3Cellipse cx='457.367' cy='123.926' rx='102.633' ry='61.0737' transform='rotate(-180 457.367 123.926)' fill='%23ECC94B'/%3E%3Cellipse cx='160.427' cy='61.0737' rx='102.633' ry='61.0737' transform='rotate(-180 160.427 61.0737)' fill='%239F7AEA'/%3E%3Cellipse cx='193.808' cy='111.771' rx='193.808' ry='73.2292' transform='rotate(-180 193.808 111.771)' fill='%234299E1'/%3E%3Cellipse cx='337.295' cy='74.415' rx='193.808' ry='73.2292' transform='rotate(-180 337.295 74.415)' fill='%2348BB78'/%3E%3C/svg%3E")`,
   ];
   const router = useRouter();
+  const [wallet] = useContext(walletContext);
   const [image, setImage] = useState<string>("");
   const [title, setTitle] = useState<string>("");
   const [desc, setDesc] = useState<string>("");
+  const [fee, setFee] = useState<string>("");
+  const [inTxn, setInTxn]: any = useState(false);
+  const [mintAmt, setMintAmt] = useState<string>("");
+  const [contractAddress, setContractAddress] = useState<string>("");
   const { address, id }: any = router.query;
   const fetchProject = async (address: any, id: any) => {
     const { data, error } = await supabase
@@ -47,13 +52,34 @@ const Project: NextPage = () => {
     error ? toast.error(error) : null;
     return data;
   };
+  const mintFraction = async (
+    address: any,
 
+    id: any,
+    amt: any
+  ) => {
+    const provider = new ethers.providers.Web3Provider(window.ethereum);
+    const signer = provider.getSigner();
+
+    if (wallet.address) {
+      setInTxn(true);
+      console.log(contractAddress);
+      const contract = new ethers.Contract(contractAddress, abi, signer);
+      console.log(contract);
+      const supplies = await contract.getSupplies();
+      console.log(supplies);
+    } else {
+      toast.error("Please connect to MetaMask");
+    }
+  };
   useEffect(() => {
     fetchProject(address, id).then((data: any) => {
       console.log(data);
       data ? setImage(data[0].image) : null;
       data ? setTitle(data[0].title) : null;
       data ? setDesc(data[0].desc) : null;
+      data ? setFee(data[0].fee) : null;
+      data ? setContractAddress(data[0].contract_address) : null;
     });
   }, [address, id]);
 
@@ -140,6 +166,10 @@ const Project: NextPage = () => {
                     address: address,
                     id: id,
                     share: 0.001,
+                    fee: fee,
+                    setMintAmt: setMintAmt,
+                    mintAmt: mintAmt,
+                    mintFraction: mintFraction,
                   }}
                 />
               </Flex>
