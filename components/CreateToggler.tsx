@@ -19,8 +19,10 @@ import { testAuthentication } from "../utils/IPFSconfig";
 import { create as ipfsHttpClient } from "ipfs-http-client";
 // import getContractAddress from "../utils/contractAddress";
 import { ethers, ContractFactory } from "ethers";
-import { abi } from "../utils/Fanvest.json";
+const { abi } = require("../utils/FanvestFactory.json");
 const { bytecode } = require("../utils/bytecode.json");
+const { abi2 } = require("../utils/Fanvest.json");
+const { bytecode2 } = require("../utils/bytecode2.json");
 import { supabase } from "../utils/supabaseClient";
 import moment from "moment";
 declare const window: any;
@@ -40,7 +42,7 @@ export default function CreateToggler() {
   const [fractions, setFractions]: any = useState(0);
   const [file, setFile]: any = useState(undefined);
   const [date, setDate]: any = useState(undefined);
-  const [cid, setCid]: any = useState("");
+  // const [cid, setCid]: any = useState("");
   const [id, setId]: any = useState("");
   const [created, setCreated] = useState(false);
   const [startStream, setStartStream] = useState(false);
@@ -63,7 +65,7 @@ export default function CreateToggler() {
   //   // return post.data.secure_url;
   // };
 
-  const createMetaData = async () => {
+  const createMetaData = async (cid: any) => {
     let metadata = {
       name: title,
       image: `https://ipfs.infura.io/ipfs/${cid}`,
@@ -78,27 +80,19 @@ export default function CreateToggler() {
   const deployContract = async () => {
     const provider = new ethers.providers.Web3Provider(window.ethereum);
     const signer = provider.getSigner();
-
+    const ca = "0x60C6E32c590c3C70a7aFD8F5209a144DE80e315D";
     if (wallet.address) {
-      const factory = new ContractFactory(abi, bytecode, signer);
-      const contract = await factory.deploy();
-      return contract.address;
+      const FanvestFactory = new ethers.Contract(ca, abi, signer);
+      const contract = await FanvestFactory.create();
+      const getCA = await FanvestFactory.getContract();
+      console.log(getCA, "contract address this");
+      return getCA[1];
     } else {
       toast.error("Please connect to MetaMask");
       return "0x";
     }
   };
-  // let id: int = [];
-  // const { data, error } = await supabase
-  //   .from("projects")
-  //   .select()
-  //   .eq("public_address", address)
-  //   .select("id");
-  // data.forEach((element: any) => {
-  //   id.push(element.id);
-  // });
-  // console.log(id, Math.max(...id));
-  // if (id === undefined) {
+
   const fetchProject = async () => {
     const { data, error } = await supabase.from("projects").select();
     data
@@ -111,7 +105,8 @@ export default function CreateToggler() {
   };
   const sendProjectToSupabase = async (
     address: string,
-    contractAddress: any
+    contractAddress: any,
+    ipfsHash: any
   ) => {
     try {
       const { data, error } = await supabase.from("projects").insert(
@@ -120,7 +115,7 @@ export default function CreateToggler() {
           contract_address: contractAddress,
           title: title,
           desc: description,
-          image: `https://ipfs.infura.io/ipfs/${cid}`,
+          image: `https://ipfs.infura.io/ipfs/${ipfsHash}`,
           fracts: fractions,
           fee: fee,
           date: date,
@@ -134,7 +129,7 @@ export default function CreateToggler() {
         contract_address: contractAddress,
         title: title,
         desc: description,
-        image: `https://ipfs.infura.io/ipfs/${cid}`,
+        image: `https://ipfs.infura.io/ipfs/${ipfsHash}`,
         fracts: String(fractions),
         fee: fee,
         date: moment(date).format("DD/MM/YYYY"),
@@ -146,7 +141,7 @@ export default function CreateToggler() {
       console.log(error);
     }
   };
-  const mint_Supply = async (contractAddress: any) => {
+  const mint_Supply = async (contractAddress: any, cid: any) => {
     const provider = new ethers.providers.Web3Provider(window.ethereum);
     const signer = provider.getSigner();
 
@@ -155,8 +150,8 @@ export default function CreateToggler() {
       console.log(contractAddress, wallet.address);
 
       try {
-        const contract = new ethers.Contract(contractAddress, abi, signer);
-        let met = await createMetaData();
+        const contract = new ethers.Contract(contractAddress, abi2, signer);
+        let met = await createMetaData(cid);
         console.log(btoa(met), title, fee, fractions);
         const txn = await contract.mintSupply(
           title,
@@ -164,13 +159,13 @@ export default function CreateToggler() {
           fee,
           fractions,
           {
-            gasLimit: 1000000,
+            gasLimit: 3000000,
           }
         );
         await txn.wait();
 
         console.log("Txn completed!", txn);
-        sendProjectToSupabase(wallet.address, contractAddress);
+        sendProjectToSupabase(wallet.address, contractAddress, cid);
         toast.success("Supply minted ⛏");
         setInTxn(false);
         return txn;
@@ -199,60 +194,6 @@ export default function CreateToggler() {
       console.log("Error uploading file: ", error);
     }
   };
-  // let utf8Encode = new TextEncoder();
-  // console.log(formData.get("file"));
-  //   uploadToCloudinary().then(() =>
-  //     formData.get("file")
-  //       ? pinata
-  //           .pinFileToIPFS(urlSource(formData.get("file")))
-  //           .then((result: any) => {
-  //             console.log(result);
-  //             // setCid(result.IpfsHash);
-  //           })
-  //           .catch((err: any) => {
-  //             console.log(err);
-  //           })
-  //       : null
-  //   );
-  // };
-  // const formData = new FormData();
-  // const ipfs = create({
-  //   host: "api.pinata.cloud/",
-  //   protocol: "https",
-  // });
-  // formData.append("file", file);
-  // formData.append("upload_preset", "public");
-  // uploadToCloudinary().then((url) => {
-  //   ipfs
-  //     .add(urlSource(url))
-  //     .then((res) => {
-  //       console.log(res);
-  //     })
-  //     .catch((err) => {
-  //       console.log(err);
-  //     });
-  // });
-  // fs.createReadStream(formData.get("file").name)
-  //   ? axios
-  //       .post(
-  //         "https://api.pinata.cloud/pinning/pinFileToIPFS",
-  //         { file: fs.createReadStream(formData.get("file").name) },
-  //         {
-  //           headers: {
-  //             pinata_api_key: process.env.NEXT_PUBLIC_PINATA_KEY || "",
-  //             pinata_secret_api_key:
-  //               process.env.NEXT_PUBLIC_PINATA_SECRET || "",
-  //           },
-  //         }
-  //       )
-  //       .then((res) => {
-  //         console.log(res);
-  //         setCid(res.data.IpfsHash);
-  //       })
-  //       .catch((err) => {
-  //         console.log(err);
-  //       })
-  //   : null;
 
   useEffect(() => {
     testAuthentication();
@@ -265,7 +206,7 @@ export default function CreateToggler() {
         })
       : null;
     console.log(contractAddress, "cA");
-  }, [contractAddress]);
+  }, [contractAddress, created]);
   // useEffect(() => {
   //   console.log(file + "file");
   // }, [file]);
@@ -347,7 +288,6 @@ export default function CreateToggler() {
               contractAddress={contractAddress}
               setContractAddress={setContractAddress}
               setCreated={setCreated}
-              setCid={setCid}
             >
               {" "}
             </CreateForm>

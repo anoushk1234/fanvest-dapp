@@ -32,10 +32,10 @@ export default function FundsBox({ props }: any) {
           Funded
         </Heading>
         <Heading as="h1" size="lg" fontWeight="600" color="white" mb="4px">
-          {props.funding} / {props.goal}
+          {props.minted} / {props.goal} FANX
         </Heading>
         <Progress
-          value={(props.funding / props.goal) * 100}
+          value={(props.minted / props.goal) * 100}
           size="md"
           borderRadius="lg"
           // border="1px solid grey"
@@ -52,7 +52,7 @@ export default function FundsBox({ props }: any) {
           fontWeight="semibold"
           mb="4px"
         >
-          {(props.funding / props.goal) * 100}% funded
+          {(props.minted / props.goal) * 100}% funded
         </Text>
         <Flex>
           <Box>
@@ -89,7 +89,7 @@ export default function FundsBox({ props }: any) {
               bgClip="text"
               mb="4px"
             >
-              {props.goal - props.funding}
+              {props.goal - props.minted}
             </Heading>
           </Box>
         </Flex>

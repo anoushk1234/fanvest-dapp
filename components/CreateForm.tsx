@@ -22,7 +22,6 @@ function CreateForm({
   contractAddress,
   setContractAddress,
   setCreated,
-  setCid,
 }: any) {
   return (
     <>
@@ -77,25 +76,25 @@ function CreateForm({
         p={4}
         onClick={() => {
           uploadToIPFS(setFile).then((cid: any) => {
-            setCid(cid);
-          });
-          deployContract()
-            .then((res: any) => {
-              console.log(res);
-              setContractAddress(res);
-              mint_Supply(res)
-                .then((res: any) => {
-                  console.log(res);
+            deployContract()
+              .then((res: any) => {
+                console.log(res);
+                setContractAddress(res);
+                console.log(res, cid);
+                mint_Supply(res, cid)
+                  .then((res: any) => {
+                    console.log(res);
 
-                  setCreated(true);
-                })
-                .catch((err: any) => {
-                  console.log(err);
-                });
-            })
-            .catch((err: any) => {
-              console.log(err);
-            });
+                    setCreated(true);
+                  })
+                  .catch((err: any) => {
+                    console.log(err);
+                  });
+              })
+              .catch((err: any) => {
+                console.log(err);
+              });
+          });
         }}
       >
         Launch Project

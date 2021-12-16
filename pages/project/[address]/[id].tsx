@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useContext } from "react";
-import { abi } from "../../../utils/Fanvest.json";
-import { bytecode } from "../../../utils/bytecode.json";
+const { abi2 } = require("../../../utils/Fanvest.json");
+const { bytecode2 } = require("../../../utils/bytecode2.json");
 import { supabase } from "../../../utils/supabaseClient";
 import { toast } from "react-toastify";
 import { ethers } from "ethers";
@@ -24,6 +24,7 @@ import {
 import ProjectInfo from "../../../components/ProjectInfo";
 import FundsBox from "../../../components/FundsBox";
 import Backers from "../../../components/Backers";
+import { hexValue } from "@ethersproject/bytes";
 
 declare const window: any;
 const Project: NextPage = () => {
@@ -39,10 +40,14 @@ const Project: NextPage = () => {
   const [title, setTitle] = useState<string>("");
   const [desc, setDesc] = useState<string>("");
   const [fee, setFee] = useState<string>("");
+  const [minted, setMinted] = useState<string>("");
   const [inTxn, setInTxn]: any = useState(false);
   const [mintAmt, setMintAmt] = useState<string>("");
+  const [totalSupply, setTotalSupply] = useState<string>("");
   const [contractAddress, setContractAddress] = useState<string>("");
   const { address, id }: any = router.query;
+  const provider = new ethers.providers.Web3Provider(window.ethereum);
+  const signer = provider.getSigner();
   const fetchProject = async (address: any, id: any) => {
     const { data, error } = await supabase
       .from("projects")
@@ -58,16 +63,9 @@ const Project: NextPage = () => {
     id: any,
     amt: any
   ) => {
-    const provider = new ethers.providers.Web3Provider(window.ethereum);
-    const signer = provider.getSigner();
-
     if (wallet.address) {
       setInTxn(true);
       console.log(contractAddress);
-      const contract = new ethers.Contract(contractAddress, abi, signer);
-      console.log(contract);
-      const supplies = await contract.getSupplies();
-      console.log(supplies);
     } else {
       toast.error("Please connect to MetaMask");
     }
@@ -82,6 +80,25 @@ const Project: NextPage = () => {
       data ? setContractAddress(data[0].contract_address) : null;
     });
   }, [address, id]);
+
+  useEffect(() => {
+    async function declareContract() {
+      try {
+        await window.ethereum.enable();
+      } catch (error) {}
+      if (wallet.address) {
+        const contract = new ethers.Contract(contractAddress, abi2, signer);
+        console.log(contract);
+        const supplies = await contract.getSupply();
+        console.log(supplies);
+        console.log(supplies.toString());
+        setTotalSupply(supplies.toString());
+      } else {
+        console.log("Please connect to MetaMask");
+      }
+    }
+    declareContract();
+  }, [wallet.address, contractAddress, signer]);
 
   console.log(address, id);
   return (
@@ -154,7 +171,7 @@ const Project: NextPage = () => {
                 />
               </Box>
             </Flex>
-            <Flex flexDir="row" mt={"10rem"}>
+            <Flex flexDir="row" justifyContent="space-between" mt={"10rem"}>
               <Flex flexDir="column">
                 <ProjectInfo title={title} desc={desc} />
               </Flex>
@@ -162,7 +179,7 @@ const Project: NextPage = () => {
                 <FundsBox
                   props={{
                     funding: "700",
-                    goal: "1000",
+                    goal: totalSupply,
                     address: address,
                     id: id,
                     share: 0.001,
@@ -170,6 +187,7 @@ const Project: NextPage = () => {
                     setMintAmt: setMintAmt,
                     mintAmt: mintAmt,
                     mintFraction: mintFraction,
+                    minted: minted,
                   }}
                 />
               </Flex>
