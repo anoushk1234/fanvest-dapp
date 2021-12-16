@@ -47,7 +47,9 @@ export default function CreateToggler() {
   const [created, setCreated] = useState(false);
   const [startStream, setStartStream] = useState(false);
   const { hasCopied, onCopy } = useClipboard(
-    `http://localhost:3000/project/${wallet.address}/${id}`
+    process.env.NEXT_PUBLIC_ENV !== "prod"
+      ? `http://localhost:3000/project/${wallet.address}/${id}`
+      : `https://${process.env.NEXT_PUBLIC_DOMAIN_URL}/project/${wallet.address}/${id}`
   );
 
   if (hasCopied) {
@@ -97,7 +99,10 @@ export default function CreateToggler() {
     const { data, error } = await supabase.from("projects").select();
     data
       ? data.forEach((element: any) => {
-          if (element.contractAddress === contractAddress) {
+          //console.log(element.contract_address, "contract address");
+
+          if (element.contract_address === contractAddress) {
+            console.log(element.id, "element");
             return element.id;
           }
         })
@@ -267,10 +272,12 @@ export default function CreateToggler() {
           {created ? (
             <>
               <Text>
-                You have successfully launched your project! Share this link for
+                You have successfully launched your film! Share this link for
                 funding with your fans{" "}
                 <Code onClick={onCopy}>
-                  {`http://localhost:3000/project/${wallet.address}/${id}`}
+                  {process.env.NEXT_PUBLIC_ENV !== "prod"
+                    ? `http://localhost:3000/project/${wallet.address}/${id}`
+                    : `https://${process.env.NEXT_PUBLIC_DOMAIN_URL}/project/${wallet.address}/${id}`}
                 </Code>
               </Text>
             </>

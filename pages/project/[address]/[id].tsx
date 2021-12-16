@@ -44,6 +44,7 @@ const Project: NextPage = () => {
   const [inTxn, setInTxn]: any = useState(false);
   const [mintAmt, setMintAmt] = useState<string>("");
   const [totalSupply, setTotalSupply] = useState<string>("");
+  const [fans, setFans] = useState<Array<any>>([]);
   const [contractAddress, setContractAddress] = useState<string>("");
   const { address, id }: any = router.query;
   const provider = new ethers.providers.Web3Provider(window.ethereum);
@@ -99,7 +100,17 @@ const Project: NextPage = () => {
     }
     declareContract();
   }, [wallet.address, contractAddress, signer]);
-
+  useEffect(() => {
+    async function getFans() {
+      if (wallet.address && contractAddress && signer) {
+        const contract = new ethers.Contract(contractAddress, abi2, signer);
+        const fans = await contract.getFans();
+        console.log(fans, "fans");
+        setFans([...fans]);
+      }
+    }
+    getFans();
+  }, []);
   console.log(address, id);
   return (
     <>
@@ -160,15 +171,7 @@ const Project: NextPage = () => {
                 <Heading size="lg" marginBottom={5}>
                   Fanvesters
                 </Heading>
-                <Backers
-                  backers={[
-                    {
-                      add: address,
-                      id: id,
-                      tokenquantity: 1,
-                    },
-                  ]}
-                />
+                <Backers backers={fans ? fans : []} />
               </Box>
             </Flex>
             <Flex flexDir="row" justifyContent="space-between" mt={"10rem"}>

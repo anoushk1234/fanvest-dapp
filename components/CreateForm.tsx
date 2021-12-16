@@ -60,7 +60,7 @@ function CreateForm({
           onChange={(e) => setFee(e.target.value)}
           placeholder={"Amount"}
         />
-        <InputRightAddon>FANX</InputRightAddon>
+        <InputRightAddon>MATIC</InputRightAddon>
       </InputGroup>
 
       <hr />
