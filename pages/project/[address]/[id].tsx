@@ -40,9 +40,10 @@ const Project: NextPage = () => {
   const [title, setTitle] = useState<string>("");
   const [desc, setDesc] = useState<string>("");
   const [fee, setFee] = useState<string>("");
-  const [minted, setMinted] = useState<string>("");
+  const [minted, setMinted] = useState<Number>(0);
   const [inTxn, setInTxn]: any = useState(false);
-  const [mintAmt, setMintAmt] = useState<string>("");
+  // const [mintAmt, setMintAmt] = useState<string>("");
+  const [balance, setBalance] = useState<Number>(0);
   const [totalSupply, setTotalSupply] = useState<string>("");
   const [fans, setFans] = useState<Array<any>>([]);
   const [contractAddress, setContractAddress] = useState<string>("");
@@ -58,29 +59,17 @@ const Project: NextPage = () => {
     error ? toast.error(error) : null;
     return data;
   };
-  const mintFraction = async (
-    address: any,
 
-    id: any,
-    amt: any
-  ) => {
-    if (wallet.address) {
-      setInTxn(true);
-      console.log(contractAddress);
-    } else {
-      toast.error("Please connect to MetaMask");
-    }
-  };
   useEffect(() => {
     fetchProject(address, id).then((data: any) => {
       console.log(data);
       data ? setImage(data[0].image) : null;
       data ? setTitle(data[0].title) : null;
       data ? setDesc(data[0].desc) : null;
-      data ? setFee(data[0].fee) : null;
+
       data ? setContractAddress(data[0].contract_address) : null;
     });
-  }, [address, id]);
+  }, [address, id, balance]);
 
   useEffect(() => {
     async function declareContract() {
@@ -100,17 +89,35 @@ const Project: NextPage = () => {
     }
     declareContract();
   }, [wallet.address, contractAddress, signer]);
+  async function getFans(contract: any) {
+    const fans = await contract.getFans();
+    console.log(fans, "fans");
+    setFans([...fans]);
+  }
+  async function getMinted(contract: any) {
+    const minted = await contract.minted();
+    console.log(minted, "minted");
+    setMinted(minted.toString());
+  }
+  async function getBalance(contract: any) {
+    const balance = await contract.getBalances();
+    console.log(balance, "balance");
+    setBalance(balance.toString());
+  }
+  async function getRate(contract: any) {
+    const rate = await contract.rate();
+    console.log(rate, "rate");
+    setFee(rate.toString());
+  }
   useEffect(() => {
-    async function getFans() {
-      if (wallet.address && contractAddress && signer) {
-        const contract = new ethers.Contract(contractAddress, abi2, signer);
-        const fans = await contract.getFans();
-        console.log(fans, "fans");
-        setFans([...fans]);
-      }
+    if (wallet.address && contractAddress && signer) {
+      const contract = new ethers.Contract(contractAddress, abi2, signer);
+      getFans(contract);
+      getMinted(contract);
+      getBalance(contract);
+      getRate(contract);
     }
-    getFans();
-  }, []);
+  }, [setInTxn]);
   console.log(address, id);
   return (
     <>
@@ -187,10 +194,13 @@ const Project: NextPage = () => {
                     id: id,
                     share: 0.001,
                     fee: fee,
-                    setMintAmt: setMintAmt,
-                    mintAmt: mintAmt,
-                    mintFraction: mintFraction,
+                    provider: provider,
+                    signer: signer,
+                    contractAddress: contractAddress,
                     minted: minted,
+                    balance: balance,
+                    setBalance: setBalance,
+                    getBalance: getBalance,
                   }}
                 />
               </Flex>

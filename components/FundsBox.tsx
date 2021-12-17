@@ -14,7 +14,38 @@ import {
   Button,
 } from "@chakra-ui/react";
 import MintButton from "./MintButton";
+import { useState, useContext } from "react";
+import { toast } from "react-toastify";
+import { walletContext } from "../utils/walletContext";
+import { ethers } from "ethers";
+const { abi2 } = require("../utils/Fanvest.json");
 export default function FundsBox({ props }: any) {
+  const [wallet, setWallet] = useContext(walletContext);
+  const [mintAmt, setMintAmt] = useState(0);
+  const [inTxn, setInTxn] = useState(false);
+  //console.log("caS", props.contractAddress, props.signer);
+
+  const mintFraction = async () => {
+    const contract = new ethers.Contract(
+      props.contractAddress,
+      abi2,
+      props.signer
+    );
+    if (wallet.address) {
+      setInTxn(true);
+      try {
+        await contract.mint(1, mintAmt, {
+          value: ethers.utils.parseEther(mintAmt.toString()),
+        });
+        toast.success(`Minted ${mintAmt} token successfully`);
+      } catch (e) {
+        toast.error(String(e.message));
+      }
+      setInTxn(false);
+    } else {
+      toast.error("Please connect to MetaMask");
+    }
+  };
   return (
     <Box
       border="2px solid white"
@@ -32,7 +63,7 @@ export default function FundsBox({ props }: any) {
           Funded
         </Heading>
         <Heading as="h1" size="lg" fontWeight="600" color="white" mb="4px">
-          {props.minted} / {props.goal} FANX
+          {props.minted} / {props.goal} SOLD
         </Heading>
         <Progress
           value={(props.minted / props.goal) * 100}
@@ -67,7 +98,7 @@ export default function FundsBox({ props }: any) {
               You Own
             </Heading>
             <Heading as="h1" size="lg" fontWeight="600" color="white" mb="4px">
-              {props.share}%
+              {(props.balance / props.goal) * 100}%
             </Heading>
           </Box>
           <Box ml="10rem">
@@ -105,7 +136,7 @@ export default function FundsBox({ props }: any) {
               Mint price
             </Heading>
             <Heading as="h1" size="lg" fontWeight="600" color="white" mb="4px">
-              {props.fee} FANX
+              {props.fee} MATIC
             </Heading>
           </Flex>
         </Flex>
@@ -120,12 +151,11 @@ export default function FundsBox({ props }: any) {
             <Input
               type="number"
               placeholder="0"
-              value={props.mintAmount}
-              onChange={(e) => props.setMintAmt(e.target.value)}
+              onChange={(e) => setMintAmt(Number(e.target.value))}
             />
             <InputRightAddon>Fractions</InputRightAddon>
           </InputGroup>
-          <MintButton mintFraction={props.mintFraction} />
+          <MintButton mintFraction={mintFraction} />
         </Flex>
       </Flex>
     </Box>

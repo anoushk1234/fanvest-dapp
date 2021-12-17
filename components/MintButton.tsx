@@ -1,13 +1,12 @@
 import { Button, Text } from "@chakra-ui/react";
 
-export default function MintButton(props: any) {
+export default function MintButton({ mintFraction }: any) {
   return (
     <Button
-      onClick={props.mintFraction}
+      onClick={mintFraction}
       bg="white"
       _hover={{ bg: "white" }}
       size="lg"
-      {...props}
     >
       <Text
         fontSize="xl"

@@ -82,7 +82,7 @@ export default function CreateToggler() {
   const deployContract = async () => {
     const provider = new ethers.providers.Web3Provider(window.ethereum);
     const signer = provider.getSigner();
-    const ca = "0x60C6E32c590c3C70a7aFD8F5209a144DE80e315D";
+    const ca = "0xf079ea59856fbfbfE2f2909144a3892B87ddF9d4";
     if (wallet.address) {
       const FanvestFactory = new ethers.Contract(ca, abi, signer);
       const contract = await FanvestFactory.create();
