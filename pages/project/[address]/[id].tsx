@@ -92,7 +92,7 @@ const Project: NextPage = () => {
   async function getFans(contract: any) {
     const fans = await contract.getFans();
     console.log(fans, "fans");
-    setFans([...fans]);
+    setFans(fans);
   }
   async function getMinted(contract: any) {
     const minted = await contract.minted();
@@ -112,12 +112,13 @@ const Project: NextPage = () => {
   useEffect(() => {
     if (wallet.address && contractAddress && signer) {
       const contract = new ethers.Contract(contractAddress, abi2, signer);
+
       getFans(contract);
       getMinted(contract);
       getBalance(contract);
       getRate(contract);
     }
-  }, [setInTxn]);
+  }, [setInTxn, wallet.address]);
   console.log(address, id);
   return (
     <>
