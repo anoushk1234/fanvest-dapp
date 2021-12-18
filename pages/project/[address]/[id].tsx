@@ -207,13 +207,12 @@ const Project: NextPage = () => {
                     <Button
                       bgColor={"#7289DA"}
                       variant="solid"
-                      onClick={() => {
-                        SignInWithDiscord(window.location.href).then(
-                          (res: any) => {
-                            console.log(res, "res", discord, "discord");
-                            //open app
-                            window.open(discord);
-                          }
+                      onClick={async () => {
+                        // console.log(discord);
+                        SignInWithDiscord(
+                          process.env.NEXT_PUBLIC_ENV !== "prod"
+                            ? `http://localhost:3000/out/${discord}`
+                            : `https://alpha.fanvest.in/out/${discord}`
                         );
                       }}
                       width={"100%"}

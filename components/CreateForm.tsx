@@ -41,7 +41,11 @@ function CreateForm({
         placeholder={"Fractions"}
       />
       <Input
-        onChange={(e) => setDiscord(e.target.value)}
+        m={2}
+        onChange={(e) => {
+          console.log(e.target.value.split("https://discord.gg/").pop());
+          setDiscord(e.target.value.split("https://discord.gg/").pop());
+        }}
         placeholder={"Discord link"}
       />
       <InputGroup m={2}>
