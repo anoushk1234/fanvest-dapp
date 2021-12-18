@@ -42,7 +42,7 @@ export default function CreateToggler() {
   const [fractions, setFractions]: any = useState(0);
   const [file, setFile]: any = useState(undefined);
   const [date, setDate]: any = useState(undefined);
-  // const [cid, setCid]: any = useState("");
+  const [discord, setDiscord]: any = useState(undefined);
   const [id, setId]: any = useState("");
   const [created, setCreated] = useState(false);
   const [startStream, setStartStream] = useState(false);
@@ -124,6 +124,7 @@ export default function CreateToggler() {
           fracts: fractions,
           fee: fee,
           date: date,
+          discord: discord,
         },
         { returning: "minimal" }
       );
@@ -295,6 +296,8 @@ export default function CreateToggler() {
               contractAddress={contractAddress}
               setContractAddress={setContractAddress}
               setCreated={setCreated}
+              discord={discord}
+              setDiscord={setDiscord}
             >
               {" "}
             </CreateForm>

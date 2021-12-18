@@ -17,6 +17,7 @@ function CreateForm({
   deployContract,
   setFractions,
   setFile,
+  setDiscord,
   setDate,
   mint_Supply,
   contractAddress,
@@ -38,6 +39,10 @@ function CreateForm({
       <Input
         onChange={(e) => setFractions(e.target.value)}
         placeholder={"Fractions"}
+      />
+      <Input
+        onChange={(e) => setDiscord(e.target.value)}
+        placeholder={"Discord link"}
       />
       <InputGroup m={2}>
         <Input

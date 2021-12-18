@@ -17,14 +17,17 @@ import {
   Text,
   Skeleton,
   Image,
+  IconButton,
   InputRightAddon,
   Button,
   useColorModeValue,
 } from "@chakra-ui/react";
+import { FaDiscord } from "react-icons/fa";
 import ProjectInfo from "../../../components/ProjectInfo";
 import FundsBox from "../../../components/FundsBox";
 import Backers from "../../../components/Backers";
 import { hexValue } from "@ethersproject/bytes";
+import SignInWithDiscord from "../../../utils/SignInWithDiscord";
 
 declare const window: any;
 const Project: NextPage = () => {
@@ -41,8 +44,9 @@ const Project: NextPage = () => {
   const [desc, setDesc] = useState<string>("");
   const [fee, setFee] = useState<string>("");
   const [minted, setMinted] = useState<Number>(0);
+  const [hasBought, setHasBought] = useState<boolean>(false);
   const [inTxn, setInTxn]: any = useState(false);
-  // const [mintAmt, setMintAmt] = useState<string>("");
+  const [discord, setDiscord] = useState<string>("");
   const [balance, setBalance] = useState<Number>(0);
   const [totalSupply, setTotalSupply] = useState<string>("");
   const [fans, setFans] = useState<Array<any>>([]);
@@ -66,7 +70,7 @@ const Project: NextPage = () => {
       data ? setImage(data[0].image) : null;
       data ? setTitle(data[0].title) : null;
       data ? setDesc(data[0].desc) : null;
-
+      data ? setDiscord(data[0].discord) : null;
       data ? setContractAddress(data[0].contract_address) : null;
     });
   }, [address, id, balance]);
@@ -109,6 +113,7 @@ const Project: NextPage = () => {
     console.log(rate, "rate");
     setFee(rate.toString());
   }
+
   useEffect(() => {
     if (wallet.address && contractAddress && signer) {
       const contract = new ethers.Contract(contractAddress, abi2, signer);
@@ -120,6 +125,17 @@ const Project: NextPage = () => {
     }
   }, [setInTxn, wallet.address]);
   console.log(address, id);
+
+  useEffect(() => {
+    let fn: any = [];
+    fans.forEach((fan: any) => {
+      fn.push(fan.toUpperCase());
+    });
+    fans.length > 0 && fn.includes(wallet.address.toUpperCase())
+      ? setHasBought(true)
+      : setHasBought(false);
+  }, [fans, wallet.address]);
+
   return (
     <>
       <Box m={10}>
@@ -182,9 +198,32 @@ const Project: NextPage = () => {
                 <Backers backers={fans ? fans : []} />
               </Box>
             </Flex>
+
             <Flex flexDir="row" justifyContent="space-between" mt={"10rem"}>
               <Flex flexDir="column">
                 <ProjectInfo title={title} desc={desc} />
+                {hasBought ? (
+                  <Flex p={5}>
+                    <Button
+                      bgColor={"#7289DA"}
+                      variant="solid"
+                      onClick={() => {
+                        SignInWithDiscord(window.location.href).then(
+                          (res: any) => {
+                            console.log(res, "res", discord, "discord");
+                            //open app
+                            window.open(discord);
+                          }
+                        );
+                      }}
+                      width={"100%"}
+                      maxH={50}
+                      rightIcon={<FaDiscord />}
+                    >
+                      Join the Discord
+                    </Button>
+                  </Flex>
+                ) : null}
               </Flex>
               <Flex flexDir="column" w="min-content">
                 <FundsBox
