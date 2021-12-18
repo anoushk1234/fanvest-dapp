@@ -38,8 +38,12 @@ export default function FundsBox({ props }: any) {
           value: ethers.utils.parseEther(mintAmt.toString()),
         });
         toast.success(`Minted ${mintAmt} token successfully`);
-      } catch (e) {
-        toast.error(String(e.message));
+      } catch (error) {
+        let errorMessage = "Fuck! someone's losing their job today";
+        if (error instanceof Error) {
+          errorMessage = error.message;
+        }
+        toast.error(errorMessage);
       }
       setInTxn(false);
     } else {
