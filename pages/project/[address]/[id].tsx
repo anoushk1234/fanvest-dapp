@@ -210,7 +210,7 @@ const Project: NextPage = () => {
                       onClick={async () => {
                         // console.log(discord);
                         SignInWithDiscord(
-                          process.env.NEXT_PUBLIC_ENV !== "prod"
+                          process.env.NEXT_PUBLIC_ENV === "dev"
                             ? `http://localhost:3000/out/${discord}`
                             : `https://alpha.fanvest.in/out/${discord}`
                         );
