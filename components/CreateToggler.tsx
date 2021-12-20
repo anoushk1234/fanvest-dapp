@@ -95,19 +95,6 @@ export default function CreateToggler() {
     }
   };
 
-  const fetchProject = async () => {
-    const { data, error } = await supabase.from("projects").select();
-    data
-      ? data.forEach((element: any) => {
-          //console.log(element.contract_address, "contract address");
-
-          if (element.contract_address === contractAddress) {
-            console.log(element.id, "element");
-            return element.id;
-          }
-        })
-      : null;
-  };
   const sendProjectToSupabase = async (
     address: string,
     contractAddress: any,
@@ -205,12 +192,21 @@ export default function CreateToggler() {
     testAuthentication();
   }, []);
   useEffect(() => {
-    created
-      ? fetchProject().then((res: any) => {
-          setId(res);
-          setCreated(true);
-        })
-      : null;
+    const fetchProject = async () => {
+      const { data, error } = await supabase.from("projects").select();
+      console.log(data, "data");
+      data
+        ? data.forEach((element: any) => {
+            //console.log(element.contract_address, "contract address");
+
+            if (element.contract_address === contractAddress) {
+              // console.log(element.id, "element");
+              setId(element.id);
+            }
+          })
+        : null;
+    };
+    fetchProject();
     console.log(contractAddress, "cA");
   }, [contractAddress, created]);
   // useEffect(() => {
