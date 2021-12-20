@@ -9,9 +9,11 @@ import {
 } from "@chakra-ui/react";
 import Link from "next/link";
 
+import { FaTwitter } from "react-icons/fa";
+
 export default function Heros() {
   return (
-    <Box px={8} py={5} mx="auto">
+    <Box px={8} py={10} mx="auto">
       <Box
         w={{ base: "full", md: 11 / 12, xl: 9 / 12 }}
         mx="auto"
@@ -19,7 +21,7 @@ export default function Heros() {
       >
         <chakra.h1
           mb={6}
-          fontSize={{ base: "4xl", md: "6xl" }}
+          fontSize={{ base: "4xl", md: "7xl" }}
           fontWeight="bold"
           lineHeight="none"
           letterSpacing={{ base: "normal", md: "tight" }}
@@ -40,7 +42,7 @@ export default function Heros() {
         <chakra.p
           px={{ base: 0, lg: 24 }}
           mb={6}
-          fontSize={{ base: "lg", md: "xl" }}
+          fontSize={{ base: "lg", md: "2xl" }}
           color={useColorModeValue("gray.600", "gray.300")}
         >
           Fanvest allows indie film makers to launch their film projects as
@@ -57,6 +59,7 @@ export default function Heros() {
             <Button
               as="a"
               variant="solid"
+              mt={5}
               // colorScheme="teal"
               display="inline-flex"
               alignItems="center"
