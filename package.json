@@ -2,7 +2,7 @@
   "name": "metafan",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev -H 127.0.0.1 -p 5000",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"

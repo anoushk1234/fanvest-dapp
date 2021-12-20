@@ -14,8 +14,8 @@ const theme = extendTheme({
   styles: {
     global: (props: any) => ({
       body: {
-        color: mode("gray.800", "whiteAlpha.900")(props),
-        bg: mode("white", "gray.800")(props),
+        color: mode("#1A1B1C", "white")(props),
+        bg: mode("#1A1B1C", "#1A1B1C")(props),
         //bg: mode("gray.50", "rgba(56, 14, 37, 1)")(props),
         //bgGradient:mode("gray.100","linear(to-br,rgba(255, 255, 255, 0.4),rgba(255, 255, 255, 0.1),rgba(47, 104, 249, 1),rgba(144, 39, 234, 1))")(props),
       },

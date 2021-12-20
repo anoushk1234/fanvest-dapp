@@ -57,7 +57,12 @@ const LoginForm = ({
                           have a drawing session with screen share.
                       </chakra.p> */}
         </GridItem>
-        <GridItem colSpan={{ base: "auto", md: 4 }}>
+        <GridItem
+          border={"5px solid"}
+          borderColor={"orange.400"}
+          borderRadius={25}
+          colSpan={{ base: "auto", md: 4 }}
+        >
           <Box as="form" mb={6} rounded="lg" shadow="xl">
             <SimpleGrid
               columns={1}
@@ -96,17 +101,21 @@ const LoginForm = ({
                                   />
                               </Flex> */}
             </SimpleGrid>
-            <Flex px={6} py={4}>
+            <Flex px={6} justify="flex-end" py={4}>
               <Button
                 py={2}
-                w="full"
-                colorScheme="blue"
+                w={["1rem", "1rem", "auto"]}
+                bgGradient="linear(to-r,#FF008A,#00D1FF)"
+                _hover={{
+                  bgGradient: "linear(to-r,#FF008A,#00D1FF)",
+                  transform: "scale(1.05) translate3d(0, 0, 0)",
+                  transition: "all 0.2s ease-in-out",
+                }}
                 leftIcon={<HiOutlineSparkles />}
                 onClick={() => handleLogin(wallet.address, name)}
               >
                 Save
               </Button>
-              
             </Flex>
           </Box>
           {/* <chakra.p fontSize="xs" textAlign="center" color="gray.600">

@@ -213,10 +213,25 @@ export default function CreateToggler() {
   //   console.log(file + "file");
   // }, [file]);
   return (
-    <Flex w="full" p={10} alignItems="center" justifyContent="space-evenly">
-      <Box py="64px" px="10" bg={useColorModeValue("gray.100", "gray.700")}>
-        <Box w="full" px={[10, 4]} mx="auto" textAlign="center">
-          <Text mb={2} fontSize="5xl" fontWeight="bold" lineHeight="tight">
+    <Flex w="80%" p={5} alignItems="center" justifyContent="space-evenly">
+      <Box
+        py="64px"
+        px="5"
+        mt="-5"
+        maxH="130vh"
+        bg={"transparent"}
+        border="5px solid"
+        borderRadius={25}
+        borderColor="orange.400"
+      >
+        <Box mt="-5" w="full" px={[10, 4]} mx="auto" textAlign="center">
+          <Text
+            mb={2}
+            fontSize="5xl"
+            // bg={"orange.500"}
+            fontWeight="bold"
+            lineHeight="tight"
+          >
             Create some magic
           </Text>
           <chakra.p
@@ -233,11 +248,15 @@ export default function CreateToggler() {
               p="2"
               textAlign="center"
               rounded="md"
-              bg={useColorModeValue("gray.200", "gray.600")}
+              bgColor="transparent"
             >
               <Button
-                colorScheme="brand"
-                variant={page === "Info" ? "solid" : "ghost"}
+                bg={page === "Info" ? "orange.400" : "transparent"}
+                _hover={{
+                  bg: "white",
+                  color: "black",
+                }}
+                borderRadius={35}
                 onClick={() => {
                   setPage("Info");
                   console.log(page);
@@ -247,13 +266,17 @@ export default function CreateToggler() {
                 Info
               </Button>
               <Button
-                colorScheme="brand"
-                variant={page === "Stream" ? "solid" : "ghost"}
+                bg={page === "Stream" ? "orange.400" : "transparent"}
                 onClick={() => {
                   setPage("Stream");
                   console.log(page);
                 }}
+                _hover={{
+                  bg: "white",
+                  color: "black",
+                }}
                 px={6}
+                borderRadius={35}
               >
                 Stream
               </Button>

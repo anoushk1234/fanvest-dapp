@@ -1,4 +1,4 @@
-import { Flex, Button, Box, Image } from "@chakra-ui/react";
+import { Flex, Button, Text, Box, Image } from "@chakra-ui/react";
 import Link from "next/link";
 
 function Header({ bal, address, handleWalletConnect }: any) {
@@ -30,7 +30,7 @@ function Header({ bal, address, handleWalletConnect }: any) {
           />
         </Flex>
       </Link>
-      <Flex p={3}>
+      <Flex p={3} align={"center"}>
         {bal && address ? (
           <>
             <Box m={2} p={2}>
@@ -45,7 +45,18 @@ function Header({ bal, address, handleWalletConnect }: any) {
               {addressDisplay}
             </Button>
             <Link href="/auth/login">
-              <Button m={3} p={4} color="white" colorScheme="twitter">
+              <Button
+                m={3}
+                px={4}
+                color="white"
+                border="5px solid "
+                bg="transparent"
+                borderRadius={35}
+                borderColor={"orange.400"}
+                h={["2rem", "3rem", "3rem", "3rem"]}
+                w={["6rem", "9rem", "9rem", "9rem"]}
+                _hover={{ bg: "white", color: "black" }}
+              >
                 Your profile
               </Button>
             </Link>
@@ -54,11 +65,20 @@ function Header({ bal, address, handleWalletConnect }: any) {
           <Button
             m={3}
             p={4}
+            borderRadius={35}
+            h={["2rem", "3rem", "3rem", "3rem"]}
+            w={["6rem", "9rem", "9rem", "9rem"]}
             color="white"
-            colorScheme="facebook"
+            _hover={{ bg: "white", color: "black" }}
+            bgColor="orange.400"
             onClick={handleWalletConnect}
           >
-            Connect Wallet
+            <Text
+              fontSize={["0.6rem", "1rem", "1rem", "1rem"]}
+              fontWeight="bold"
+            >
+              Connect Wallet
+            </Text>
           </Button>
         )}
       </Flex>
