@@ -12,7 +12,11 @@ import { MdWavingHand } from "react-icons/md";
 
 export default function Backers({ backers }: any) {
   return (
-    <List spacing={3} overflowY="scroll" height="20rem">
+    <List
+      spacing={3}
+      // overflowY="scroll"
+      height="20rem"
+    >
       {backers.length > 0 ? (
         backers.map((backer: any, id: any) => {
           return (
@@ -38,7 +42,9 @@ export default function Backers({ backers }: any) {
         })
       ) : (
         <ListItem>
-          <Text fontSize="lg">No backers yet</Text>
+          <Text px={4} fontSize="lg">
+            No backers yet
+          </Text>
         </ListItem>
       )}
     </List>

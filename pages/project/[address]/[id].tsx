@@ -164,7 +164,9 @@ const Project: NextPage = () => {
                 p={3}
                 justifyContent={"space-between"}
                 position={"relative"}
-                bg={useColorModeValue("white", "gray.800")}
+                bgColor="#F7FAFC12"
+                // border="5px solid"
+                // borderColor="orange.400"
                 _after={{
                   content: '""',
                   position: "absolute",
@@ -179,20 +181,24 @@ const Project: NextPage = () => {
                   content: '""',
                   position: "absolute",
                   zIndex: "-1",
-                  height: "full",
+                  height: "500px",
                   maxW: "640px",
                   width: "full",
-                  filter: "blur(40px)",
-                  transform: "scale(0.98)",
+
+                  filter: "blur(145px)",
+                  transform: "scale(0.5) translateY(-50%)  ",
+
                   backgroundRepeat: "no-repeat",
                   backgroundSize: "cover",
                   top: 0,
                   left: 0,
+
+                  //backgroundImage: backgrounds[0],
                   backgroundImage:
                     backgrounds[(Math.floor(Math.random() * 4) + 1) % 4],
                 }}
               >
-                <Heading size="lg" marginBottom={5}>
+                <Heading p={4} size="lg" marginBottom={5}>
                   Fanvesters
                 </Heading>
                 <Backers backers={fans ? fans : []} />

@@ -73,12 +73,13 @@ const LoginForm = ({
               borderColor={useColorModeValue("gray.200", "gray.700")}
             >
               <Flex>
-                <VisuallyHidden>Username</VisuallyHidden>
+                {/* <VisuallyHidden>Username</VisuallyHidden> */}
                 <Input
                   mt={0}
                   type="text"
                   onChange={(e) => setName(e.target.value)}
-                  placeholder="First Name"
+                  placeholder="Full Name"
+                  textColor="white"
                   required
                 />
               </Flex>
