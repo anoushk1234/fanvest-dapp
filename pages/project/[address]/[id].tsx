@@ -143,15 +143,13 @@ const Project: NextPage = () => {
           <Flex flexDir="column" justifyContent="space-evenly">
             <Flex flexDir="row">
               <Skeleton isLoaded={image ? true : false} margin={5} boxSize="md">
-                <Box bgColor="gray.200" borderRadius="xl">
-                  <Image
-                    borderRadius="xl"
-                    margin={5}
-                    maxH="auto"
-                    src={image}
-                    alt="movie poster"
-                  />
-                </Box>
+                <Image
+                  borderRadius="xl"
+                  margin={5}
+                  maxH="auto"
+                  src={image}
+                  alt="movie poster"
+                />
               </Skeleton>
               <Box
                 boxShadow={"lg"}
