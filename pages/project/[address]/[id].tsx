@@ -219,7 +219,7 @@ const Project: NextPage = () => {
                             : `https://alpha.fanvest.in/out/${discord}`
                         );
                       }}
-                      width={"100%"}
+                      maxW="190px"
                       maxH={50}
                       rightIcon={<FaDiscord />}
                     >
